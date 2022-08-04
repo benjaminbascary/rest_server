@@ -1,6 +1,5 @@
 const express = require('express');
-
-let instance;
+const cors = require('cors');
 
 class Server {
   constructor() {
@@ -15,9 +14,6 @@ class Server {
   }
 
   init() {
-    if (instance) {
-
-    }
     this.app.listen(this.port, () => {
       console.log('Server running on port: ' + this.port);
     });
@@ -50,6 +46,8 @@ class Server {
   }
 
   middlewares() {
+    // CORS
+    this.app.use(cors());
     // Public
     this.app.use(express.static('public'));
   }
