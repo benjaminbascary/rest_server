@@ -6,10 +6,20 @@ const getUsers = (req, res) => {
 }
 
 // POST
+
+/**
+ * query example: 
+ *  http://localhost:3000/api/users/?userName=Benjamin&lastName=Bascary&apiKey=ap234hj23kq234
+ */
+
 const postUsers = (req, res) => {
+  const { userName = 'No name', lastName = 'No last name', apiKey } = req.query;
   res.json({
-    message: 'POST to /api'
-  });
+    query: req.query,
+    userName,
+    lastName,
+    apiKey
+  })
 }
 
 // PUT
