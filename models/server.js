@@ -32,6 +32,8 @@ class Server {
     this.app.use(cors());
     // Public
     this.app.use(express.static('public'));
+    // Body parser
+    this.app.use(express.json());
   }
 
 }

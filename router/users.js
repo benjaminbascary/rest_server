@@ -1,35 +1,21 @@
+// Router import from EXPRESS
 const { Router } = require('express');
+// Imports the controllers
+const { getUsers, postUsers, putUsers, patchUsers, deleteUsers } = require('../controllers/users');
 
+// Initialices the router and defines the routes with its controllers
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'GET to /api'
-  });
-})
 
-router.put('/', (req, res) => {
-  res.json({
-    message: 'PUT to /api'
-  });
-})
 
-router.patch('/', (req, res) => {
-  res.json({
-    message: 'PATCH to /api'
-  });
-})
+router.get('/', getUsers);
 
-router.post('/', (req, res) => {
-  res.json({
-    message: 'POST to /api'
-  });
-})
+router.put('/', putUsers);
 
-router.delete('/', (req, res) => {
-  res.json({
-    message: 'DELETE to /api'
-  });
-})
+router.patch('/', patchUsers);
+
+router.post('/', postUsers);
+
+router.delete('/', deleteUsers);
 
 module.exports = router;
