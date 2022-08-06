@@ -21,8 +21,14 @@ const getUsers = (req, res) => {
  */
 
 const postUsers = async (req, res) => {
-  const user = new User(req.body);
+  const { name, email, password, role } = req.body;
+  const user = new User({name, email, password, role});
+  // Encrypt the password
+  const salt = bcryptjs.genSaltSync();
+  user.password = bcryptjs.hashSync(password, salt);
+  // Save in database
   await user.save();
+
   res.json({
     user
   })
