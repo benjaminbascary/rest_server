@@ -1,3 +1,11 @@
+// MODEL IMPORTS
+const User = require('../models/user');
+
+
+
+
+
+
 // GET
 const getUsers = (req, res) => {
   res.json({
@@ -12,13 +20,11 @@ const getUsers = (req, res) => {
  *  http://localhost:3000/api/users/?userName=Benjamin&lastName=Bascary&apiKey=ap234hj23kq234
  */
 
-const postUsers = (req, res) => {
-  const { userName = 'No name', lastName = 'No last name', apiKey } = req.query;
+const postUsers = async (req, res) => {
+  const user = new User(req.body);
+  await user.save();
   res.json({
-    query: req.query,
-    userName,
-    lastName,
-    apiKey
+    user
   })
 }
 
