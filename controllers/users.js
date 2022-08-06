@@ -1,6 +1,9 @@
 // MODEL IMPORTS
 const User = require('../models/user');
 
+// 3RD PARTY
+const bcryptjs = require('bcryptjs');
+const { validationResult } = require('express-validator');
 
 
 
@@ -15,14 +18,24 @@ const getUsers = (req, res) => {
 
 // POST
 
-/**
- * query example: 
- *  http://localhost:3000/api/users/?userName=Benjamin&lastName=Bascary&apiKey=ap234hj23kq234
- */
-
 const postUsers = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors);
+  }
+
   const { name, email, password, role } = req.body;
   const user = new User({name, email, password, role});
+
+  // Verify if email already exists
+  const emailExists = await User.findOne({ email: email});
+  if (emailExists) {
+    return res.status(400).json({
+      error: 'The e-mail is already in use!'
+    })
+  }
+
+
   // Encrypt the password
   const salt = bcryptjs.genSaltSync();
   user.password = bcryptjs.hashSync(password, salt);

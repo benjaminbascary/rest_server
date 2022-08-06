@@ -1,5 +1,7 @@
 // Router import from EXPRESS
 const { Router } = require('express');
+// CHECKER MIDDLEWARE
+const { check } = require('express-validator');
 // Imports the controllers
 const { getUsers, postUsers, putUsers, patchUsers, deleteUsers } = require('../controllers/users');
 
@@ -14,7 +16,10 @@ router.put('/', putUsers);
 
 router.patch('/', patchUsers);
 
-router.post('/', postUsers);
+// Second argument with validators array
+router.post('/', [
+  check('email', 'The e-mail is not valid.').isEmail(),
+], postUsers);
 
 router.delete('/', deleteUsers);
 
