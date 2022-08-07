@@ -33,4 +33,10 @@ const UserSchema = Schema({
 
 });
 
+// We override toJSON method to return all the user minus the password and version to the client
+UserSchema.methods.toJSON = function() {
+  const { __v, password, ...user } = this.toObject();
+  return user;
+}
+
 module.exports = model('User', UserSchema);
