@@ -1,24 +1,36 @@
+// MODEL IMPORTS
+const User = require('../models/user');
+
+// 3RD PARTY
+const bcryptjs = require('bcryptjs');
+
+
+
+
 // GET
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
+  const users = await User.find();
   res.json({
-    message: 'GET to /api'
+    users: users
   });
 }
 
 // POST
 
-/**
- * query example: 
- *  http://localhost:3000/api/users/?userName=Benjamin&lastName=Bascary&apiKey=ap234hj23kq234
- */
+const postUsers = async (req, res) => {
+  
 
-const postUsers = (req, res) => {
-  const { userName = 'No name', lastName = 'No last name', apiKey } = req.query;
+  const { name, email, password, role } = req.body;
+  const user = new User({name, email, password, role});
+
+  // Encrypt the password
+  const salt = bcryptjs.genSaltSync();
+  user.password = bcryptjs.hashSync(password, salt);
+  // Save in database
+  await user.save();
+
   res.json({
-    query: req.query,
-    userName,
-    lastName,
-    apiKey
+    user
   })
 }
 
