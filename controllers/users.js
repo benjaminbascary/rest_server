@@ -3,26 +3,22 @@ const User = require('../models/user');
 
 // 3RD PARTY
 const bcryptjs = require('bcryptjs');
-const { validationResult } = require('express-validator');
-
 
 
 
 
 // GET
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
+  const users = await User.find();
   res.json({
-    message: 'GET to /api'
+    users: users
   });
 }
 
 // POST
 
 const postUsers = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors);
-  }
+  
 
   const { name, email, password, role } = req.body;
   const user = new User({name, email, password, role});
