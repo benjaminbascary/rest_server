@@ -9,9 +9,23 @@ const bcryptjs = require('bcryptjs');
 
 // GET
 const getUsers = async (req, res) => {
-  const users = await User.find();
+  const { limit = 10, offset = 0 } = req.query;
+
+  const query = {status: true};
+
+  const response = await Promise.all([
+    User.countDocuments(query),
+    User.find(query).skip(Number(offset)).limit(limit)
+  ]);
+  
+  const [ total, users ] = response;
+
   res.json({
-    users: users
+    total,
+    offset: Number(offset),
+    limit,
+    count: users.length,
+    users
   });
 }
 
@@ -29,9 +43,7 @@ const postUsers = async (req, res) => {
   // Save in database
   await user.save();
 
-  res.json({
-    user
-  })
+  res.json(user)
 }
 
 
@@ -48,10 +60,7 @@ const putUsers = async (req, res) => {
 
   const user = await User.findByIdAndUpdate(id, rest);
 
-  res.json({
-    ok: true,
-    user: user
-  });
+  res.json(user);
 }
 
 // PATCH
