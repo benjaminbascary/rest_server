@@ -38,9 +38,7 @@ const postUsers = async (req, res) => {
 // PUT
 const putUsers = async (req, res) => {
   const id = req.params.id;
-  const { password, google, ...rest } = req.body;
-
-  // @TODO VALIDAR CONTRA BASE DE DATOS
+  const { _id, password, google, ...rest } = req.body;
 
   if (password) {
     // Encrypt the password
@@ -52,7 +50,7 @@ const putUsers = async (req, res) => {
 
   res.json({
     ok: true,
-    user
+    user: user
   });
 }
 
