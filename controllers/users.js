@@ -71,9 +71,16 @@ const patchUsers = (req, res) => {
 }
 
 // DELETE
-const deleteUsers = (req, res) => {
+const deleteUsers = async (req, res) => {
+
+  const { id } = req.params;
+  const query = { status: false };
+
+  const user = await User.findByIdAndUpdate(id, query);
+  user.save();
+
   res.json({
-    message: 'DELETE to /api'
+    message: `The user with the id ${id} was successfully removed.`
   });
 }
 
