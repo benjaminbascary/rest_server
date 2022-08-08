@@ -5,7 +5,8 @@ const { getUsers, postUsers, putUsers, patchUsers, deleteUsers } = require('../c
 // Validators
 const { 
   isRoleValid,
-  emailExists 
+  emailExists, 
+  userExistsById
 } = require('../helpers/db-validators');
 const { validateUserFields } = require('../middlewares/validateUserFields');
 // Express-validator
@@ -20,9 +21,13 @@ const router = Router();
 
 router.get('/', getUsers);
 
-router.put('/', putUsers);
-
 router.patch('/', patchUsers);
+
+router.put('/:id',[
+  check('id', 'The id is not valid').isMongoId(),
+  check('id').custom(userExistsById),
+  validateUserFields
+], putUsers);
 
 // Second argument with validators array
 router.post('/', [
