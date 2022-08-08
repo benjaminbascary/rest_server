@@ -2,13 +2,17 @@
 const express = require('express');
 const cors = require('cors');
 
+// LOCAL IMPORTS
+const { dbConnection } = require('../database/config');
+
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT
-    
-    // STRING PATHS
     this.usersPath = '/api/users';
+
+    // INITIALICES DATA BASE CONNECTION
+    this.connectDataBase();
 
     // INITIALICES THE MIDDLEWARES
     this.middlewares();
@@ -34,6 +38,10 @@ class Server {
     this.app.use(express.static('public'));
     // Body parser
     this.app.use(express.json());
+  }
+
+  async connectDataBase() {
+    await dbConnection();
   }
 
 }
